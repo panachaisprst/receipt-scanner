@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Tests, types and builds
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+      - name: Install backend dependencies
+        run: npm ci --prefix backend
+      - name: Install frontend dependencies
+        run: npm ci --prefix frontend
+      - name: Test backend
+        run: npm test --prefix backend
+      - name: Check backend types
+        run: npm run typecheck --prefix backend
+      - name: Test frontend
+        run: npm test --prefix frontend
+      - name: Build frontend and check types
+        run: npm run build --prefix frontend
+      - name: Build standalone prototype
+        run: npm run build --prefix receipt-scanner-demo
+      - name: Check generated prototype syntax
+        run: node --check receipt-scanner-demo/dist/server/index.js

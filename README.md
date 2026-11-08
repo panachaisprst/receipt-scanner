@@ -1,5 +1,7 @@
 # Receipt Scanner
 
+[![CI](https://github.com/panachaisprst/receipt-scanner/actions/workflows/ci.yml/badge.svg)](https://github.com/panachaisprst/receipt-scanner/actions/workflows/ci.yml)
+
 An AI-assisted course team project for scanning Thai and English receipts and bank transfer slips, reviewing extracted details, and saving expenses in THB.
 
 This repository is a portfolio snapshot of a course team project. Panachai Seeprasert designed the overall application and workflow; Codex generated most of the implementation and test code. The original MIT license and copyright are retained.
@@ -47,6 +49,16 @@ See [backend documentation](backend/README.md) for API behavior and [the fronten
 
 ## Validation
 
+[GitHub Actions](https://github.com/panachaisprst/receipt-scanner/actions/workflows/ci.yml) runs these checks on every push and pull request, and can also be triggered manually. It additionally builds the standalone prototype and checks its generated JavaScript. Tests need no Gemini key or live Supabase project. CI does not deploy the app.
+
+The current baseline is **45 automated test cases in total: 44 backend + 1 frontend**. Counts refer to Vitest test cases, not assertions or extraction samples.
+
+| Suite | What it checks |
+| --- | --- |
+| Backend | API validation, authorization and direct database access, receipt reconciliation, simulated Gemini failures, duplicate confirmation races |
+| Frontend | Money parsing and formatting, including fractional satang and invalid input |
+
+
 ```sh
 npm test --prefix backend
 npm run typecheck --prefix backend
@@ -54,7 +66,9 @@ npm test --prefix frontend
 npm run build --prefix frontend
 ```
 
-Backend tests simulate Supabase and Gemini services and apply the migrations to PGlite. They do not establish live OAuth configuration or receipt extraction accuracy.
+Backend tests simulate Supabase and Gemini services and apply the migrations to PGlite. They do not establish live OAuth configuration, receipt extraction accuracy, production scale or uptime. Most test code was generated with Codex; passing tests alone are not independent verification.
+
+See [engineering decisions and verification](ENGINEERING.md) for why duplicate protection lives in a database constraint, how ownership is enforced, what the tests assert and what still needs validation.
 
 ## Deployment and project context
 
