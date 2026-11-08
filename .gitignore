@@ -1,0 +1,7 @@
+.vercel/
+node_modules/
+.vercel
+.env*
+.DS_Store
+!.env.example
+.openai/

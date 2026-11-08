@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An interactive Thai-first receipt scanner prototype.">
+<title>Receipt Scanner</title>
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<header class="top"><div class="wrap nav">
+  <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">▤</span> Receipt Scanner</a>
+  <div class="nav-actions"><span class="demo" data-t="demo"></span><div class="language" aria-label="Language"><button type="button" data-lang="th">ไทย</button><button type="button" data-lang="en">EN</button></div></div>
+</div></header>
+<main class="wrap">
+  <section class="intro">
+    <div><div class="eyebrow"><span class="dot"></span> <span data-t="workspace"></span></div>
+    <h1 data-t="heading"></h1><p data-t="intro"></p></div>
+    <aside class="total"><span data-t="running"></span><strong id="total">฿0.00</strong><small id="count"></small></aside>
+  </section>
+  <div class="layout">
+    <section class="panel scan">
+      <div class="section-label" data-t="scanStep"></div>
+      <h2 data-t="scan"></h2><p class="muted" data-t="scanCopy"></p>
+      <div id="drop" class="drop">
+        <div class="receipt-art" aria-hidden="true"><div class="receipt-paper"><span></span><i></i><i></i><i></i><b>฿</b></div><div class="beam"></div></div>
+        <strong data-t="drop"></strong>
+        <small data-t="formats"></small>
+        <button type="button" class="primary" id="pick"><span aria-hidden="true">↑</span> <span data-t="choose"></span></button>
+        <input id="file" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+      </div>
+      <div class="samples">
+        <span data-t="try"></span>
+        <div class="sample-buttons">
+          <button type="button" data-sample="complete"><span aria-hidden="true">▤</span> <span data-t="sample1"></span></button>
+          <button type="button" data-sample="incomplete"><span aria-hidden="true">▤</span> <span data-t="sample2"></span></button>
+        </div>
+      </div>
+      <p class="privacy"><span aria-hidden="true">ⓘ</span> <span data-t="notice"></span></p>
+      <p id="status" role="status" hidden></p>
+    </section>
+    <section class="panel ledger">
+      <div class="section-label" data-t="ledgerStep"></div>
+      <h2 data-t="expenses"></h2><p class="muted" data-t="ledgerCopy"></p>
+      <ul id="list" class="list"></ul>
+      <div id="empty" class="empty"><span class="empty-mark" aria-hidden="true">≡</span><strong data-t="empty"></strong><p data-t="emptyCopy"></p></div>
+    </section>
+  </div>
+  <footer><span>Receipt Scanner <span aria-hidden="true">·</span> <span data-t="demo"></span></span><span data-t="footer"></span></footer>
+</main>
+<dialog id="dialog" aria-labelledby="dialog-title" aria-describedby="dialog-copy">
+  <div class="dialog-inner">
+    <div class="dialog-head"><h2 id="dialog-title"></h2><button class="icon" type="button" id="close" data-label="cancel">×</button></div>
+    <p id="dialog-copy" class="muted"></p>
+    <div id="preview" class="preview" hidden></div>
+    <form id="edit-form">
+      <label><span data-t="shop"></span><input name="shop" required maxlength="120"></label>
+      <label><span data-t="date"></span><input name="date" type="date" required></label>
+      <label><span data-t="amount"></span><input name="amount" type="number" required min="0" max="99999999.99" step="0.01" inputmode="decimal"></label>
+      <div class="dialog-actions"><button class="secondary" type="button" id="cancel" data-t="cancel"></button><button class="primary" type="submit" data-t="save"></button></div>
+    </form>
+    <div id="delete-actions" class="dialog-actions" hidden><button class="secondary" type="button" id="keep" data-t="cancel"></button><button class="danger" type="button" id="confirm-delete" data-t="remove"></button></div>
+  </div>
+</dialog>
+</body>
+</html>
